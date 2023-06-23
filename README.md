@@ -1,10 +1,11 @@
 # Multiple Document QA Chain with Sources
 
+This code provides a question-answering (QA) system using Langchain, which allows you to chat with multiple documents (PDF, TXT, etc.) as sources. The code also includes support for creating a simple Streamlit app for a user-friendly interface.
+
 <img width="622" alt="Screen Shot 2023-06-23 at 1 25 40 PM" src="https://github.com/jmayank23/Multiple-Document-QAChain-withSources/assets/27727185/f2e9edff-09a3-4bfd-9a5f-a2b3516cf415">
 
 **Note: The conversation shown in the screenshot was based on a PDF by UCSD International Student Office. The information displayed in the chat should not be taken as truth; it is for demonstration purposes only.**
 
-This code provides a question-answering (QA) system using Langchain, which allows you to chat with multiple documents (PDF, TXT, etc.) as sources. The code also includes support for creating a simple Streamlit app for a user-friendly interface.
 
 ## Unique Features
 
