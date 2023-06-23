@@ -1,26 +1,28 @@
-# Multiple Document QA Chain withS ources
+# Multiple Document QA Chain with Sources
+
+<img width="622" alt="Screen Shot 2023-06-23 at 1 25 40 PM" src="https://github.com/jmayank23/Multiple-Document-QAChain-withSources/assets/27727185/f2e9edff-09a3-4bfd-9a5f-a2b3516cf415">
+
+**Note: The conversation shown in the screenshot was based on a PDF by UCSD International Student Office. The information displayed in the chat should not be taken as truth; it is for demonstration purposes only.**
 
 This code provides a question-answering (QA) system using Langchain, which allows you to chat with multiple documents (PDF, TXT, etc.) as sources. The code also includes support for creating a simple Streamlit app for a user-friendly interface.
 
-## Installation
+## Unique Features
 
-To install the required packages, run the following command:
+This repository includes the following unique features:
 
-```shell
-pip install langchain openai tiktoken chromadb pypdf streamlit
-```
+1. **Persistent Database**: The code provides an option for the database to persist between sessions. By specifying a directory for `persist_directory` when creating the database, you can avoid recreating the index each time the code runs. To create a persistent database, use the following code:
+   ```python
+   vectordb = Chroma.from_documents(documents, embedding=embedding, persist_directory='db')
+   ```
+
+2. **Customizable Prompts**: The code clearly demonstrates how the prompts are sent to the language model (LLM) under the hood. This allows you to easily understand and modify the prompts to tailor the responses for your specific use case. You can explore and adjust the prompts in the following code section:
+   ```python
+   # Print the chat prompts
+   print(qa_chain.combine_documents_chain.llm_chain.prompt.messages[0].prompt.template)
+   print(qa_chain.combine_documents_chain.llm_chain.prompt.messages[1].prompt.template)
+   ```
 
 ## Code description
-
-### Setup OpenAI API Key
-
-Set your OpenAI API key as an environment variable. Replace `KEY` with your actual API key.
-
-```python
-import os
-
-os.environ["OPENAI_API_KEY"] = "KEY"
-```
 
 ### Usage
 
@@ -35,8 +37,14 @@ os.environ["OPENAI_API_KEY"] = "KEY"
    ```
 
 2. Create the document database:
+   - To create a new database each time:
    ```python
-   # Embed and store the texts
+   embedding = OpenAIEmbeddings()
+   
+   vectordb = Chroma.from_documents(documents, embedding=embedding, persist_directory=None)
+   ```
+   - To create a database that persists between sessions:
+   ```python
    embedding = OpenAIEmbeddings()
    
    vectordb = Chroma.from_documents(documents, embedding=embedding, persist_directory='db')
@@ -44,13 +52,8 @@ os.environ["OPENAI_API_KEY"] = "KEY"
 
 3. Create the question-answering chain:
    ```python
-   # Set up the turbo LLM
    turbo_llm = ChatOpenAI(temperature=0, model_name='gpt-3.5-turbo')
-   
-   # Create the retriever for the database
    retriever = vectordb.as_retriever(search_kwargs={"k": 3})
-   
-   # Create the question-answering chain
    qa_chain = RetrievalQA.from_chain_type(llm=turbo_llm, chain_type="stuff", retriever=retriever, return_source_documents=True)
    ```
 
